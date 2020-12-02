@@ -5,6 +5,22 @@
     font-style: normal;
 }
 
+.masthead {
+    background-image: url("./Resources/Pano1-Blurred.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-attachment: fixed;
+    height: auto;
+    margin-top: -3rem;
+}
+
+.masthead h1, .masthead h4 {
+    color: #eeeeee;
+    mix-blend-mode: overlay;
+    font-family: 'MinecraftiaRegular';
+}
+
 .mc_title {
     display: flex;
     flex-direction: row;
@@ -17,81 +33,9 @@
     user-select: none;
 }
 
-.masthead {
-    background-image: url("./Resources/Pano1-Blurred.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: center;
-    background-attachment: fixed;
-    height: auto;
-    margin-top: -3rem;
-}
-
-.masthead .content h1, .masthead .content h2 {
+body {
     color: #eeeeee;
-    mix-blend-mode: overlay;
-}
-
-#pano2 {
-    background-image: url("./Resources/Pano2-Blurred.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: center;
-    background-position-y: 100%;
-    background-attachment: fixed;
-}
-
-#pano2 p, #pano2 h1 {
-    mix-blend-mode: color-dodge;
-}
-
-.container {
-    padding-left: 25%;
-    padding-right: 25%;
-    margin: auto;
-}
-
-@media (max-width: 767px) {
-    .container {
-        padding-left: 5%;
-        padding-right: 5%;
-    }
-}
-
-.voidpack {
-    color: #ff4340;
-    cursor: pointer;
-}
-
-.voidpack:hover {
-    color: #ff110d;
-}
-
-.card img {
-    object-fit: cover;
-}
-
-.card-cover {
-    position: relative;
-}
-
-.card-cover h3 {
-    font-size: 24px !important;
-    font-family: 'MinecraftiaRegular';
-    font-weight: normal;
-    font-style: normal;
-    position: absolute;
-    bottom: 4px;
-    left: 0px;
-    text-align: center;
-    width: 100%;
-}
-
-.card-cover a {
-    font-family: 'MinecraftiaRegular';
-    font-weight: normal;
-    font-style: normal;
-    text-decoration: none;
+    background-color: #252525;
 }
 
 body.loading {
@@ -105,17 +49,7 @@ body, .masthead {
     transition: opacity ease-in-out 250ms;
 }
 
-.cards .card {
-    padding: 0px;
-}
-
-.cards .card h3, .cards .card h4 {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    max-width: calc(100% - 2rem);
-}
-
-img.icon.image {
+img.icn {
     width: 20% !important;
     height: auto;
     position: absolute;
@@ -124,12 +58,13 @@ img.icon.image {
     width: 100%;
 }
 
-.embed-grid.grid {
-    padding: 0 4rem;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-grid-columns: (minmax(512px, 1fr))[auto-fit];
-    grid-template-columns: repeat(auto-fit, minmax(512px, 1fr));
+.container {
+    width: 95% !important;
+    max-width: 1024px !important;
+}
+
+img.blurred {
+    filter: blur(10%);
 }
 
 .outline-text {

@@ -19,64 +19,63 @@ const update = async () => {
 const renderServer = async (server) => {
     const { name, id, port, hasPackVer, dynmapUrl } = server;
 
-    const resp = await fetch(`https://mcapi.us/server/status?ip=forgeserv.net&port=${port}`);
+    const resp = await fetch(`http://mcapi.us/server/status?ip=forgeserv.net&port=${port}`);
     const data = await resp.json();
 
     const card = document.createElement('div');
     card.className = 'card';
 
-    /* BEGIN CARD COVER */
-    const cardCover = document.createElement('div');
-    cardCover.className = 'card-cover';
+    const img = document.createElement('img');
+    // img.className ='blurred card-img-top';
+    img.className = 'card-img-overlay';
+    img.src = `/Resources/servers/${id}cover.png`;
 
-    const cardImg = document.createElement('img');
-    cardImg.className = 'blurred';
-    cardImg.src = `/Resources/${id}/cover.png`;
+    const icn = document.createElement('img');
+    icn.className = 'icn';
+    icn.src = data.favicon ? data.favicon : '/Resources/default-icon.png';
 
-    const cardIcn = document.createElement('img');
-    cardIcn.className = 'icon image';
-    cardIcn.src = data.favicon ? data.favicon : '/Resources/default-icon.png';
+    const title = document.createElement('h5');
+    title.className = 'card-title';
+    title.innerText = name;
 
-    const serverName = document.createElement('h3');
-    serverName.innerText = name;
-    serverName.className = 'outline-text';
+    card.appendChild(img);
+    card.appendChild(icn);
+    card.appendChild(title);
 
-    cardCover.appendChild(cardImg);
-    cardCover.appendChild(cardIcn);
-    cardCover.appendChild(serverName);
-    /* END CARD COVER */
+    const cardText = document.createElement('div');
+    cardText.className = 'card-text';
 
-    /* BEGIN CARD BOTTOM */
-    const serverStatus = document.createElement('h3');
-    serverStatus.innerText = `Server is ${data.online ? 'online' : 'offline'}`;
-    serverStatus.style.color = data.online ? '#7cb342' : '#ff4340';
+    const sts = document.createElement('h6');
+    sts.innerText = `Server is ${data.online ? 'online' : 'offline'}`;
+    sts.style.color = data.online ? '#7cb342' : '#ff4340';
 
-    const playerCount = document.createElement('h4');
-    playerCount.innerText = `${data.players.now} / ${data.players.max} Players Online`;
+    const cnt = document.createElement('p');
+    cnt.innerText = `${data.players.now} / ${data.players.max} Players Online`;
 
-    const version = document.createElement('h4');
-    version.innerText = `Minecraft Version ${data.server.name}`;
+    const ver = document.createElement('p');
+    ver.innerText = `Minecraft Version ${data.server.name}`;
 
-    card.appendChild(cardCover);
-    card.appendChild(serverStatus);
-    card.appendChild(playerCount);
-    card.appendChild(version);
+
+    cardText.appendChild(sts);
+    cardText.appendChild(cnt);
+    cardText.appendChild(ver);
+    card.appendChild(cardText);
 
     if (hasPackVer) {
         const packVer = document.createElement('h4');
         packVer.innerText = `Modpack Version ${extractVersion(data.motd)}`;
         card.appendChild(packVer);
-    } else if (dynmapUrl) {
-        const dynmapAnchor = document.createElement('a');
-        dynmapAnchor.href = dynmapUrl;
-
-        const dynmap = document.createElement('h4');
-        dynmap.innerText = `${name.substring(0, 1).toUpperCase() + name.slice(1)} Dynmap`;
-
-        dynmapAnchor.appendChild(dynmap);
-        card.appendChild(dynmapAnchor);
     }
-    /* END CARD BOTTOM */
+    if (dynmapUrl) {
+        const dynAnc = document.createElement('a');
+        dynAnc.href = dynmapUrl;
+
+        const dmap = document.createElement('b');
+        dmap.innerText = `${name.substring(0, 1).toUpperCase() + name.slice(1)} Dynmap`;
+
+        dynAnc.appendChild(dmap);
+        card.appendChild(dynAnc);
+    }
 
     return card;
 };
@@ -88,6 +87,7 @@ const extractVersion = (motd) => {
 
 window.addEventListener('load', () => {
     update();
+    document.body.classList.remove("loading");
     setInterval(() => {
         update();
     }, 30000);
