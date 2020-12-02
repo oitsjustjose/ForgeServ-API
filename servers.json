@@ -1,0 +1,25 @@
+{
+  "servers": [
+    {
+      "name": "Vanilla",
+      "id": "vanilla",
+      "port": 25566,
+      "hasPackVer": false,
+      "dynmapUrl": "https://dynmap.vanilla.forgeserv.net"
+    },
+    {
+      "name": "UntouchableMC",
+      "id": "untouchable",
+      "port": 25555,
+      "hasPackVer": false,
+      "dynmapUrl": "https://dynmap.untouchable.forgeserv.net"
+    },
+    {
+      "name": "Drehmal Primordial",
+      "id": "drehmal",
+      "port": 25570,
+      "hasPackVer": false,
+      "dynmapUrl": "https://dynmap.drehmal.forgeserv.net"
+    }
+  ]
+}

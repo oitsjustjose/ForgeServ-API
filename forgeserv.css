@@ -1,0 +1,138 @@
+@font-face {
+    font-family: 'MinecraftiaRegular';
+    src: url('/Resources/MinecraftiaRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.mc_title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mc_title img {
+    width: 48px;
+    height: 48px;
+    user-select: none;
+}
+
+.masthead {
+    background-image: url("./Resources/Pano1-Blurred.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-attachment: fixed;
+    height: auto;
+    margin-top: -3rem;
+}
+
+.masthead .content h1, .masthead .content h2 {
+    color: #eeeeee;
+    mix-blend-mode: overlay;
+}
+
+#pano2 {
+    background-image: url("./Resources/Pano2-Blurred.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: 100%;
+    background-attachment: fixed;
+}
+
+#pano2 p, #pano2 h1 {
+    mix-blend-mode: color-dodge;
+}
+
+.container {
+    padding-left: 25%;
+    padding-right: 25%;
+    margin: auto;
+}
+
+@media (max-width: 767px) {
+    .container {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+
+.voidpack {
+    color: #ff4340;
+    cursor: pointer;
+}
+
+.voidpack:hover {
+    color: #ff110d;
+}
+
+.card img {
+    object-fit: cover;
+}
+
+.card-cover {
+    position: relative;
+}
+
+.card-cover h3 {
+    font-size: 24px !important;
+    font-family: 'MinecraftiaRegular';
+    font-weight: normal;
+    font-style: normal;
+    position: absolute;
+    bottom: 4px;
+    left: 0px;
+    text-align: center;
+    width: 100%;
+}
+
+.card-cover a {
+    font-family: 'MinecraftiaRegular';
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+}
+
+body.loading {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body, .masthead {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity ease-in-out 250ms;
+}
+
+.cards .card {
+    padding: 0px;
+}
+
+.cards .card h3, .cards .card h4 {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: calc(100% - 2rem);
+}
+
+img.icon.image {
+    width: 20% !important;
+    height: auto;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 100%;
+}
+
+.embed-grid.grid {
+    padding: 0 4rem;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-grid-columns: (minmax(512px, 1fr))[auto-fit];
+    grid-template-columns: repeat(auto-fit, minmax(512px, 1fr));
+}
+
+.outline-text {
+    color: white;
+    text-shadow: -1px 0 rgba(0, 0, 0, .5), 0 1px rgba(0, 0, 0, .5), 1px 0 rgba(0, 0, 0, .5), 0 -1px rgba(0, 0, 0, .5);
+}

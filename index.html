@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <link rel="shortcut icon" href="./Resources/logo.png" type="image/x-icon">
+    <title>ForgeServ</title>
+    <script src="./forgeserv.js"></script>
+    <link rel="stylesheet" type="text/css" href="/JuiceUI/css/dark.css" id="juiceui">
+    <link rel="stylesheet" type="text/css" href="JuiceUI/fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="forgeserv.css">
+</head>
+
+<body>
+    <div class="masthead">
+        <div class="centered content">
+            <img src="./Resources/logo.png" class="centered image" style="width: 32em; height: auto;">
+            <h1>ForgeServ</h1>
+            <h2>A server for <i>many</i> Minecraft Modpacks + Servers</h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1><i class="fas fa-server"></i> Hardware</h1>
+        <p>
+            ForgeServ is hosted myself on a Fiber-Internet backend. The hardware specs of the new server machine are:
+        <ul>
+            <li>8-Core / 16-Thread Intel Xeon E5-2670 @ 2.60GHz</li>
+            <li>64GB of ECC RAM</li>
+            <li>500GB SSD for OS, MC Servers and Web Servers</li>
+            <li>500GB SSD for backups</li>
+        </ul>
+        </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="container">
+        <div class="mc_title">
+            <img src="/Resources/minecraft.png">
+            <h1>&nbsp;Current Packs & Versions</h1>
+        </div>
+
+        <p>
+            ForgeServ is running the following servers. Servers marked Private are usually for only a select
+            group of users and if you aren't currently able to access it, you probably won't ever be able
+            to.
+        </p>
+        <p>
+            The packs running on ForgeServ are listed below, as are their status. The status updates in
+            real-time, though the player count is cached server-side for 5 minutes so there may be delay:
+        </p>
+
+        <div class="cards" id="servers">
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="container" id="pano2">
+        <h1><i class="fab fa-discord"></i> The Discord Server</h1>
+        <div class="embed" style="opacity: 90%;">
+            <iframe src="https://discordapp.com/widget?id=303876626935054336&theme=dark" allowtransparency="true"
+                frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="container">
+        <h1><i class="fas fa-file-signature"></i> Joining ForgeServ Servers</h1>
+        <p>
+            Generally only friends or friends of friends are ever invited to any / all of the ForgeServ servers.
+            It's not a strict rule, but I have a Minecraft playing style that I prefer (e.g. no cheating / pranking,
+            etc.) that I prefer everyone else stick with as well.
+
+            If you <i>really</i> want to join give me (@oitsjustjose) a shout on the Discord . We'll discuss it at
+            that point.
+        </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="container">
+        <h1><i class="fas fa-file-archive"></i> Suggested Resource Pack</h1>
+        <p>
+            I have been working on a custom resource pack for modded Minecraft that implement's a few of the
+            best 16x16 textures (including most if not all of Jappa's new 1.14.x textures) into a pack I've
+            called "Voidpack". I have made a few textures, but by no means to I claim ownership of them all. You
+            can check it out and download it <span class="voidpack" for-modal="voidpack">here!</span>
+        </p>
+    </div>
+
+    <div class="modal" id="voidpack">
+        <div class="modal-content">
+            <span class="close">
+                <i class="fas fa-times"></i>
+            </span>
+            <div class="embed">
+                <iframe src="https://voidpack.forgeserv.net"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
