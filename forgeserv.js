@@ -27,7 +27,6 @@ const update = async () => {
 const renderServer = async (server) => {
     const { name, id, url, hasPackVer, dynmapUrl } = server;
 
-    // const resp = await fetch(`https://mc.api.forgeserv.net/server/status?ip=forgeserv.net&port=${port}`);
     const resp = await fetch(`https://api.mcsrvstat.us/2/${url}`);
     const { motd, players, software, version, online, icon } = await resp.json();
     console.log(motd);
@@ -46,7 +45,7 @@ const renderServer = async (server) => {
     } else {
         card.setAttribute("data-toggle", "tooltip");
         card.setAttribute("data-placement", "top");
-        card.setAttribute("title", "No Dynmap for this Server 😭");
+        card.setAttribute("title", "No Dynmap for this Server");
     }
 
     const img = document.createElement('img');
