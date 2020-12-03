@@ -20,6 +20,20 @@
       "port": 25570,
       "hasPackVer": false,
       "dynmapUrl": "https://dynmap.drehmal.forgeserv.net"
+    },
+    {
+      "name": "Caves 'n Cliffs",
+      "id": "caves",
+      "port": 25569,
+      "hasPackVer": false,
+      "dynmapUrl": null
+    },
+    {
+      "name": "CUIP",
+      "id": "cuip",
+      "port": 25567,
+      "hasPackVer": null,
+      "dynmapUrl": null
     }
   ]
 }
