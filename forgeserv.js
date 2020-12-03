@@ -19,22 +19,21 @@ const update = async () => {
 const renderServer = async (server) => {
     const { name, id, port, hasPackVer, dynmapUrl } = server;
 
-    const resp = await fetch(`https://mcapi.us/server/status?ip=forgeserv.net&port=${port}`);
+    const resp = await fetch(`http://mcapi.us/server/status?ip=forgeserv.net&port=${port}`);
     const data = await resp.json();
 
     const card = document.createElement('div');
     card.className = 'card';
 
     const img = document.createElement('img');
-    // img.className ='blurred card-img-top';
-    img.className = 'card-img-overlay';
-    img.src = `/Resources/servers/${id}cover.png`;
+    img.className ='blurred card-img-top';
+    img.src = `/Resources/servers/${id}/cover.png`;
 
     const icn = document.createElement('img');
     icn.className = 'icn';
     icn.src = data.favicon ? data.favicon : '/Resources/default-icon.png';
 
-    const title = document.createElement('h5');
+    const title = document.createElement('h3');
     title.className = 'card-title';
     title.innerText = name;
 
