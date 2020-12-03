@@ -14,6 +14,12 @@ const update = async () => {
     for (const el of elements) {
         serverElements.appendChild(el);
     }
+
+    // Init all tooltips to be bootstrappy bois
+    [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
+        .map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
 };
 
 const renderServer = async (server) => {
@@ -25,56 +31,55 @@ const renderServer = async (server) => {
     const card = document.createElement('div');
     card.className = 'card';
 
+    if (dynmapUrl) {
+        card.addEventListener('click', () => {
+            window.open(dynmapUrl, "_blank");
+        });
+        card.setAttribute("data-toggle", "tooltip");
+        card.setAttribute("data-placement", "top");
+        card.setAttribute("title", "Click to View Dynmap");
+    } else {
+        card.setAttribute("data-toggle", "tooltip");
+        card.setAttribute("data-placement", "top");
+        card.setAttribute("title", "No Dynmap for this Server 😭");
+    }
+
     const img = document.createElement('img');
-    img.className ='blurred card-img-top';
+    img.className = 'card-img-top';
     img.src = `/Resources/servers/${id}/cover.png`;
 
     const icn = document.createElement('img');
     icn.className = 'icn';
     icn.src = data.favicon ? data.favicon : '/Resources/default-icon.png';
 
-    const title = document.createElement('h3');
-    title.className = 'card-title';
-    title.innerText = name;
-
     card.appendChild(img);
     card.appendChild(icn);
-    card.appendChild(title);
 
-    const cardText = document.createElement('div');
-    cardText.className = 'card-text';
-
-    const sts = document.createElement('h6');
-    sts.innerText = `Server is ${data.online ? 'online' : 'offline'}`;
-    sts.style.color = data.online ? '#7cb342' : '#ff4340';
-
-    const cnt = document.createElement('p');
-    cnt.innerText = `${data.players.now} / ${data.players.max} Players Online`;
-
-    const ver = document.createElement('p');
-    ver.innerText = `Minecraft Version ${data.server.name}`;
+    const container = document.createElement('p');
+    container.className = 'card-body';
 
 
-    cardText.appendChild(sts);
-    cardText.appendChild(cnt);
-    cardText.appendChild(ver);
-    card.appendChild(cardText);
+    const title = document.createElement('h4');
+    title.className = 'card-title mb-3';
+    title.innerText = `${name}: (${data.online ? 'Online' : 'Offline'})`;
+    title.style.color = data.online ? '#7cb342' : '#ff4340';
+    container.appendChild(title);
+
+    const ver = document.createElement('h5');
+    ver.innerText = `Server Running ${data.server.name}`;
+
+    const cnt = document.createElement('h6');
+    cnt.innerText = `${data.players.now}/${data.players.max} Players Online`;
 
     if (hasPackVer) {
-        const packVer = document.createElement('h4');
+        const packVer = document.createElement('h5');
         packVer.innerText = `Modpack Version ${extractVersion(data.motd)}`;
-        card.appendChild(packVer);
+        container.appendChild(packVer);
     }
-    if (dynmapUrl) {
-        const dynAnc = document.createElement('a');
-        dynAnc.href = dynmapUrl;
 
-        const dmap = document.createElement('b');
-        dmap.innerText = `${name.substring(0, 1).toUpperCase() + name.slice(1)} Dynmap`;
-
-        dynAnc.appendChild(dmap);
-        card.appendChild(dynAnc);
-    }
+    container.appendChild(ver);
+    container.appendChild(cnt);
+    card.appendChild(container);
 
     return card;
 };
@@ -87,6 +92,7 @@ const extractVersion = (motd) => {
 window.addEventListener('load', () => {
     update();
     document.body.classList.remove("loading");
+
     setInterval(() => {
         update();
     }, 30000);
