@@ -7,7 +7,9 @@ const update = async () => {
 
     /* Generate the elements before updating the renderer */
     for (const server of data.servers) {
-        elements.push(await renderServer(server));
+        if (server.enabled) {
+            elements.push(await renderServer(server));
+        }
     }
 
     serverElements.innerHTML = '';
