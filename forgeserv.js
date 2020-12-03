@@ -25,7 +25,7 @@ const update = async () => {
 const renderServer = async (server) => {
     const { name, id, port, hasPackVer, dynmapUrl } = server;
 
-    const resp = await fetch(`http://mcapi.us/server/status?ip=forgeserv.net&port=${port}`);
+    const resp = await fetch(`https://mcapi.us/server/status?ip=forgeserv.net&port=${port}`);
     const data = await resp.json();
 
     const card = document.createElement('div');
