@@ -4,7 +4,7 @@
       "name": "Vanilla",
       "id": "vanilla",
       "enabled": true,
-      "port": 25566,
+      "url": "vanilla.forgeserv.net",
       "hasPackVer": false,
       "dynmapUrl": "https://dynmap.vanilla.forgeserv.net"
     },
@@ -12,7 +12,7 @@
       "name": "UntouchableMC",
       "id": "untouchable",
       "enabled": true,
-      "port": 25555,
+      "url": "untouchable.forgeserv.net",
       "hasPackVer": false,
       "dynmapUrl": "https://dynmap.untouchable.forgeserv.net"
     },
@@ -20,7 +20,7 @@
       "name": "Drehmal Primordial",
       "id": "drehmal",
       "enabled": true,
-      "port": 25570,
+      "url": "drehmal.primordial.forgeserv.net",
       "hasPackVer": false,
       "dynmapUrl": "https://dynmap.drehmal.forgeserv.net"
     },
@@ -28,7 +28,7 @@
       "name": "Caves 'n Cliffs",
       "id": "caves",
       "enabled": true,
-      "port": 25569,
+      "url": "caves.forgeserv.net",
       "hasPackVer": false,
       "dynmapUrl": null
     },
@@ -36,7 +36,7 @@
       "name": "CUIP",
       "id": "cuip",
       "enabled": true,
-      "port": 25567,
+      "url": "cuip.vanilla.forgeserv.net",
       "hasPackVer": null,
       "dynmapUrl": null
     }

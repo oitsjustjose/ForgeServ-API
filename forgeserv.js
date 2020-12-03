@@ -25,10 +25,13 @@ const update = async () => {
 };
 
 const renderServer = async (server) => {
-    const { name, id, port, hasPackVer, dynmapUrl } = server;
+    const { name, id, url, hasPackVer, dynmapUrl } = server;
 
-    const resp = await fetch(`https://mc.api.forgeserv.net/server/status?ip=forgeserv.net&port=${port}`);
-    const data = await resp.json();
+    // const resp = await fetch(`https://mc.api.forgeserv.net/server/status?ip=forgeserv.net&port=${port}`);
+    const resp = await fetch(`https://api.mcsrvstat.us/2/${url}`);
+    const { motd, players, software, version, online, icon } = await resp.json();
+    console.log(motd);
+    // const data = await resp.json();
 
     const card = document.createElement('div');
     card.className = 'card';
@@ -52,7 +55,7 @@ const renderServer = async (server) => {
 
     const icn = document.createElement('img');
     icn.className = 'icn';
-    icn.src = data.favicon ? data.favicon : '/Resources/default-icon.png';
+    icn.src = icon || '/Resources/default-icon.png';
 
     card.appendChild(img);
     card.appendChild(icn);
@@ -63,19 +66,19 @@ const renderServer = async (server) => {
 
     const title = document.createElement('h4');
     title.className = 'card-title mb-3';
-    title.innerText = `${name}: (${data.online ? 'Online' : 'Offline'})`;
-    title.style.color = data.online ? '#7cb342' : '#ff4340';
+    title.innerText = `${name}: (${online ? 'Online' : 'Offline'})`;
+    title.style.color = online ? '#7cb342' : '#ff4340';
     container.appendChild(title);
 
     const ver = document.createElement('h5');
-    ver.innerText = `Server Running ${data.server.name}`;
+    ver.innerText = online ? `Server Running ${software ? software : 'Version'} ${version}` : 'Offline';
 
     const cnt = document.createElement('h6');
-    cnt.innerText = `${data.players.now}/${data.players.max} Players Online`;
+    cnt.innerText = online ? `${players.online}/${players.max} Players Online` : 'Offline';
 
     if (hasPackVer) {
         const packVer = document.createElement('h5');
-        packVer.innerText = `Modpack Version ${extractVersion(data.motd)}`;
+        packVer.innerText = `Modpack Version ${extractVersion(motd.clean.join(" "))}`;
         container.appendChild(packVer);
     }
 
