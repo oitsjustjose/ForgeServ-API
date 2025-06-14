@@ -4,7 +4,7 @@ import socket
 import struct
 
 
-class Server:
+class ServerPingResponse:
     def __init__(self, data):
         self.description = data.get("description")
         if isinstance(self.description, dict):
@@ -82,7 +82,7 @@ def ping(ip, port=25565):
 
             data += chunk
         try:
-            return Server(json.loads(data))
+            return ServerPingResponse(json.loads(data))
         except json.decoder.JSONDecodeError:
             return None
     finally:
