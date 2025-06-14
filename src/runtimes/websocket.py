@@ -12,11 +12,11 @@ import docker
 from docker import DockerClient
 from websockets.asyncio.server import ServerConnection, serve
 
-from common import get_server_info
+from common import list_servers
 
 
 def __fetch(client: DockerClient):
-    return json.dumps(get_server_info(client, all=True))
+    return json.dumps(list_servers(client, all=True))
 
 
 CLIENT = docker.from_env()
@@ -38,11 +38,11 @@ async def __setup(host: str, port: int = 8008):
 async def __wait_for_change(conn: ServerConnection):
     global CACHE
 
-    new = json.dumps(get_server_info(CLIENT, all=True))
+    new = json.dumps(list_servers(CLIENT, all=True))
 
     while new == CACHE:
         await asyncio.sleep(1)
-        new = json.dumps(get_server_info(CLIENT, all=True))
+        new = json.dumps(list_servers(CLIENT, all=True))
     CACHE = new
     await conn.send(new)
 

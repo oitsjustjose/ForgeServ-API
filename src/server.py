@@ -72,7 +72,9 @@ class Server:
                 continue
 
             try:
+                print(f"Pinging localhost:{int(port)}")
                 server_ping_info = ping_server("localhost", port=int(port))
+                print(f"Pinged: {server_ping_info}")
             except ValueError:
                 continue
 
@@ -83,6 +85,7 @@ class Server:
             return None
 
         log_info = Server.parse_log_for_info(attrs["State"]["Health"]["Log"][-1]["Output"])
+        print(f"Log Info is done! \n\tlog_info.max={log_info.max}\n\tlog_info.motd={log_info.motd}\n\tlog_info.version={log_info.version}")
         players = [Player(name=pl.name, uuid=pl.id) for pl in server_ping_info.players]
 
         return ServerConstructorParams(

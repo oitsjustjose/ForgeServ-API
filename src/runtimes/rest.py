@@ -10,7 +10,7 @@ import docker
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from common import get_server_info
+from common import list_servers
 
 client = docker.from_env()
 app = Flask(__name__)
@@ -20,7 +20,7 @@ CORS(app)
 @app.route("/")
 def index():
     try:
-        data = get_server_info(client, all=bool(request.args.get("all")))
+        data = list_servers(client, all=bool(request.args.get("all")))
 
         if request.args.get("sort"):
             data = sorted(data, key=lambda x: x[request.args.get("sort")])

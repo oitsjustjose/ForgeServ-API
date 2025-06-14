@@ -11,7 +11,7 @@ import asyncio
 from flask_cors import CORS
 from websockets.asyncio.server import serve, ServerConnection
 
-from common import get_server_info
+from common import list_servers
 import docker
 from docker import DockerClient
 
@@ -27,7 +27,7 @@ class RestServer:
 
     def index(self):
         try:
-            data = get_server_info(self._client, all=bool(request.args.get("all")))
+            data = list_servers(self._client, all=bool(request.args.get("all")))
 
             if request.args.get("sort"):
                 data = sorted(data, key=lambda x: x[request.args.get("sort")])
@@ -48,7 +48,7 @@ class RestServer:
 class WebSocketServer:
     def __init__(self, docker_client: DockerClient):
         self._client = docker_client
-        self.cache = json.dumps(get_server_info(self._client, all=True))
+        self.cache = json.dumps(list_servers(self._client, all=True))
 
     async def __loop_infinitely(self, conn: ServerConnection):
         while True:
@@ -61,11 +61,11 @@ class WebSocketServer:
             await asyncio.Future()
 
     async def __wait_for_change(self, conn: ServerConnection):
-        new = json.dumps(get_server_info(self._client, all=True))
+        new = json.dumps(list_servers(self._client, all=True))
 
         while new == self.cache:
             await asyncio.sleep(1)
-            new = json.dumps(get_server_info(self._client, all=True))
+            new = json.dumps(list_servers(self._client, all=True))
         self.cache = new
         await conn.send(new)
 
@@ -89,7 +89,7 @@ def main() -> None:
 
     wss_thread.start()
     RestServer(client).run(host="0.0.0.0", port=int(env["REST_PORT"]) if "REST_PORT" in env else 9090)
-    # wss_thread.join()
+    wss_thread.join()
 
 
 if __name__ == "__main__":

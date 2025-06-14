@@ -23,7 +23,7 @@ def parse_server(attrs: dict) -> Union[Server, None]:
     return Server(params) if params else None
 
 
-def get_server_info(client: DockerClient, all: bool = False) -> List[dict]:
+def list_servers(client: DockerClient, all: bool = False) -> List[dict]:
     """
     Distills the container data for all servers on the current host into a usable format
     Arguments:

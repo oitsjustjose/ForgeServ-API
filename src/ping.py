@@ -78,7 +78,7 @@ def ping(ip, port=25565):
         while len(data) != length:
             chunk = sock.recv(length - len(data))
             if not chunk:
-                raise ValueError("connection abborted")
+                raise ValueError("connection aborted")
 
             data += chunk
         try:
