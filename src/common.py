@@ -3,13 +3,15 @@ Author: Jose Stovall
 Description: Common utilities used to fetch current server statuses
 """
 
-import docker
 import base64
-import json
+
+import docker
 import requests
+
 from ping import ping as ping_server
 
 client = docker.from_env()
+
 
 def __parse_log(log: str) -> dict:
     """
@@ -24,7 +26,30 @@ def __parse_log(log: str) -> dict:
             "motd": str
     """
 
-    FORMAT_CODES = ["§0", "§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f", "§o", "§l", "§m", "§n", "§o", "§r"]
+    FORMAT_CODES = [
+        "§0",
+        "§1",
+        "§2",
+        "§3",
+        "§4",
+        "§5",
+        "§6",
+        "§7",
+        "§8",
+        "§9",
+        "§a",
+        "§b",
+        "§c",
+        "§d",
+        "§e",
+        "§f",
+        "§o",
+        "§l",
+        "§m",
+        "§n",
+        "§o",
+        "§r",
+    ]
     KEYS = ["version", "online", "max", "motd"]
     log = log.replace("localhost:25565 : ", "")
     for cd in FORMAT_CODES:
@@ -35,7 +60,7 @@ def __parse_log(log: str) -> dict:
         start = log.find(key) + len(key)
         end = 0
         try:
-            end = log.index(KEYS[idx+1])
+            end = log.index(KEYS[idx + 1])
         except IndexError:
             end = len(log)
         except ValueError:
@@ -44,6 +69,7 @@ def __parse_log(log: str) -> dict:
         value = log[start:end].strip().replace("=", "").replace("'", "")
         ret[key] = value
     return ret
+
 
 def __get_type(env: list) -> str:
     """
@@ -90,7 +116,9 @@ def __extract_info(attrs: dict) -> dict:
             for binding in attrs["HostConfig"]["PortBindings"][key]:
                 try:
                     data = ping_server("localhost", port=int(binding["HostPort"]))
-                    if not data: # Hmm, it's a minecraft container but not a minecraft server port? might be dynmap:
+                    if (
+                        not data
+                    ):  # Hmm, it's a minecraft container but not a minecraft server port? might be dynmap:
                         # dynmap = find_dynmap(int(binding["HostPort"]))
                         host_port = int(binding["HostPort"])
                         request = requests.get(f"http://172.16.1.4:7070/{host_port}")
@@ -110,11 +138,12 @@ def __extract_info(attrs: dict) -> dict:
         "health": attrs["State"]["Health"]["Status"],
         "players": players,
         "icon": str(base64.b64encode(icon).decode()) if icon else None,
-        "dynmap": dynmap
+        "dynmap": dynmap,
     }
 
     info.update(__parse_log(attrs["State"]["Health"]["Log"][-1]["Output"]))
     return info
+
 
 def get_server_info(all: bool = False):
     """
@@ -126,8 +155,9 @@ def get_server_info(all: bool = False):
     """
     containers = list(
         filter(
-            lambda x: "itzg/minecraft-server" in x.attrs['Config']['Image'] and "net.forgeserv.hide" not in x.labels,
-            client.containers.list(all=all)
+            lambda x: "itzg/minecraft-server" in x.attrs["Config"]["Image"]
+            and "net.forgeserv.hide" not in x.labels,
+            client.containers.list(all=all),
         )
     )
 

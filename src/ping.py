@@ -2,7 +2,6 @@ import struct
 import socket
 import base64
 import json
-import sys
 
 
 class Server:
