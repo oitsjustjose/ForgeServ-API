@@ -63,17 +63,21 @@ class Server:
         """
 
         def __ping_server(attrs: dict) -> Union[ServerPingResponse, None]:
-            # Try to ping server if it's running to get users online
+            """Iterates through all Container:Host port binding pairs and attempts to ping the server
+
+            Args:
+                attrs (dict): The container's attributes
+
+            Returns:
+                Union[ServerPingResponse, None]: The info derived from the Ping, if available, otherwise None (failure case)
+            """
+
             for key in attrs["HostConfig"]["PortBindings"]:
                 # We have to do this nested for loop to get each Container->Host binding to get the actual port of the server
                 #  By default they'd otherwise all show up as 25565.. :/
                 for binding in attrs["HostConfig"]["PortBindings"][key]:
                     try:
-                        server_port = int(binding["HostPort"])
-                        print(f"Pinging localhost:{server_port}")
-
-                        ping_resp = ping_server("localhost", port=server_port)
-                        print(f"Pinged: {ping_resp}")
+                        ping_resp = ping_server("localhost", port=int(binding["HostPort"]))
                         return ping_resp
                     except ValueError:
                         continue
@@ -85,7 +89,6 @@ class Server:
             return None
 
         log_info = Server.parse_log_for_info(attrs["State"]["Health"]["Log"][-1]["Output"])
-        print(f"Log Info is done! \n\tlog_info.max={log_info.max}\n\tlog_info.motd={log_info.motd}\n\tlog_info.version={log_info.version}")
         players = [Player(name=pl.name, uuid=pl.id) for pl in ping_resp.players]
 
         return ServerConstructorParams(
