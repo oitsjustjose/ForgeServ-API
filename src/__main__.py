@@ -16,10 +16,14 @@ import docker
 from docker import DockerClient
 
 from threading import Thread
+import logging
 
 
 class RestServer:
     def __init__(self, docker_client: DockerClient):
+        log = logging.getLogger("werkzeug")
+        log.setLevel(logging.ERROR)
+
         self._app = Flask("RestAPI")
         self._app.add_url_rule("/", view_func=self.index)
         self._client = docker_client
