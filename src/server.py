@@ -72,7 +72,11 @@ class Server:
             if protocol != "tcp":
                 continue
 
-            server_ping_info = ping_server("localhost", port=int(port))
+            try:
+                server_ping_info = ping_server("localhost", port=int(port))
+            except ValueError:
+                continue
+
             if server_ping_info is not None:
                 break
 

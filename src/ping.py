@@ -1,39 +1,33 @@
-import struct
-import socket
 import base64
 import json
+import socket
+import struct
 
 
-class ServerPingResponse:
+class Server:
     def __init__(self, data):
         self.description = data.get("description")
         if isinstance(self.description, dict):
             self.description = self.description["text"]
 
         self.icon = base64.b64decode(data.get("favicon", "")[22:])
-        self.players: ServerPingResponsePlayers = ServerPingResponsePlayers(data["players"])
+        self.players = Players(data["players"])
         self.version = data["version"]["name"]
         self.protocol = data["version"]["protocol"]
 
     def __str__(self):
-        return "Server(description={!r}, icon={!r}, version={!r}, protocol={!r}, players={})".format(
-            self.description,
-            bool(self.icon),
-            self.version,
-            self.protocol,
-            self.players,
-        )
+        return "Server(description={!r}, icon={!r}, version={!r}, protocol={!r}, players={})".format(self.description, bool(self.icon), self.version, self.protocol, self.players)
 
 
-class ServerPingResponsePlayers(list):
+class Players(list):
     def __init__(self, data):
-        super().__init__(ServerPingResponsePlayer(x) for x in data.get("sample", []))
+        super().__init__(Player(x) for x in data.get("sample", []))
 
     def __str__(self):
         return "[{}]".format(", ".join(str(x) for x in self))
 
 
-class ServerPingResponsePlayer:
+class Player:
     def __init__(self, data):
         self.id = data["id"]
         self.name = data["name"]
@@ -55,16 +49,12 @@ def ping(ip, port=25565):
             i |= (k & 0x7F) << (j * 7)
             j += 1
             if j > 5:
-                return -1
+                raise ValueError("var_int too big")
             if not (k & 0x80):
                 return i
 
-    try:
-        sock = socket.socket()
-        sock.connect((ip, port))
-    except ConnectionRefusedError:
-        return None
-
+    sock = socket.socket()
+    sock.connect((ip, port))
     try:
         host = ip.encode("utf-8")
         data = b""  # wiki.vg/Server_List_Ping
@@ -77,7 +67,10 @@ def ping(ip, port=25565):
         sock.sendall(data + b"\x01\x00")  # handshake + status ping
         length = read_var_int()  # full packet length
         if length < 10:
-            return None
+            if length < 0:
+                raise ValueError("negative length read")
+            else:
+                raise ValueError(f"invalid response {sock.read(length)}")  # type: ignore
 
         sock.recv(1)  # packet type, 0 for pings
         length = read_var_int()  # string length
@@ -85,11 +78,11 @@ def ping(ip, port=25565):
         while len(data) != length:
             chunk = sock.recv(length - len(data))
             if not chunk:
-                return None
+                raise ValueError("connection abborted")
 
             data += chunk
         try:
-            return ServerPingResponse(json.loads(data))
+            return Server(json.loads(data))
         except json.decoder.JSONDecodeError:
             return None
     finally:
