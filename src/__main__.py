@@ -89,7 +89,7 @@ def main() -> None:
 
     wss_thread.start()
     RestServer(client).run(host="0.0.0.0", port=int(env["REST_PORT"]) if "REST_PORT" in env else 9090)
-    wss_thread.join()
+    # wss_thread.join()
 
 
 if __name__ == "__main__":
