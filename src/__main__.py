@@ -66,7 +66,6 @@ class WebSocketServer:
         while new == self.cache:
             await asyncio.sleep(1)
             new = json.dumps(get_server_info(self._client, all=True))
-        print(new)
         self.cache = new
         await conn.send(new)
 
