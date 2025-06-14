@@ -9,7 +9,7 @@ if [ -d "${absdir}/.venv" ]; then
   rm -rf "${absdir}/.venv"
 fi
 
-pythoncmd=$(command -v python) || $(command -v python3)
+pythoncmd=python3 # TODO: this might need to be changed?
 
 $pythoncmd -m venv "${absdir}/.venv"
 echo "Made venv successfully"
