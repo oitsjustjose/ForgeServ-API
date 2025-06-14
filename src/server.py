@@ -62,38 +62,38 @@ class Server:
             attrs (dict): The container attributes for the given MC container
         """
 
-        server_ping_info: Union[ServerPingResponse, None] = None
+        def __ping_server(attrs: dict) -> Union[ServerPingResponse, None]:
+            # Try to ping server if it's running to get users online
+            for key in attrs["HostConfig"]["PortBindings"]:
+                # We have to do this nested for loop to get each Container->Host binding to get the actual port of the server
+                #  By default they'd otherwise all show up as 25565.. :/
+                for binding in attrs["HostConfig"]["PortBindings"][key]:
+                    try:
+                        server_port = int(binding["HostPort"])
+                        print(f"Pinging localhost:{server_port}")
 
-        # Try to ping server if it's running to get users online
-        for binding in attrs["HostConfig"]["PortBindings"]:
-            port, protocol = binding.split("/")
-            # Realistically nothing we care about is on TCP...
-            if protocol != "tcp":
-                continue
+                        ping_resp = ping_server("localhost", port=server_port)
+                        print(f"Pinged: {ping_resp}")
+                        return ping_resp
+                    except ValueError:
+                        continue
 
-            try:
-                print(f"Pinging localhost:{int(port)}")
-                server_ping_info = ping_server("localhost", port=int(port))
-                print(f"Pinged: {server_ping_info}")
-            except ValueError:
-                continue
+            return None
 
-            if server_ping_info is not None:
-                break
-
-        if server_ping_info is None:
+        ping_resp = __ping_server(attrs)
+        if not ping_resp:
             return None
 
         log_info = Server.parse_log_for_info(attrs["State"]["Health"]["Log"][-1]["Output"])
         print(f"Log Info is done! \n\tlog_info.max={log_info.max}\n\tlog_info.motd={log_info.motd}\n\tlog_info.version={log_info.version}")
-        players = [Player(name=pl.name, uuid=pl.id) for pl in server_ping_info.players]
+        players = [Player(name=pl.name, uuid=pl.id) for pl in ping_resp.players]
 
         return ServerConstructorParams(
             health=attrs["State"]["Health"]["Status"],
             status=attrs["State"]["Status"],
             type=Server.get_server_type(attrs["Config"]["Env"]),
             version=log_info.version,
-            icon=str(base64.b64encode(server_ping_info.icon).decode()) if server_ping_info.icon else None,
+            icon=str(base64.b64encode(ping_resp.icon).decode()) if ping_resp.icon else None,
             motd=log_info.motd,
             name=attrs["Name"][1:],
             online=len(players),
