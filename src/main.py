@@ -1,11 +1,8 @@
 """
 Author: Jose Stovall
 Description: A Flask API service for the running Minecraft server statuses
-Architecture:
 
-Python App that loops infinitely, pushing the correct Pixlet state to the TidByt
-Changes come in via WebAPI so we can make a lightweight desktop client and leave the work to the RasPi
-Also allows the TidByt to still have forgeserv.net data without needing to be stood up
+Run via Docker with either network mode = HOST, **OR** set the environment variable HOST_IP to the IP of your server
 """
 
 import docker
