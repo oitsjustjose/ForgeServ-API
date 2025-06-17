@@ -8,14 +8,21 @@ Changes come in via WebAPI so we can make a lightweight desktop client and leave
 Also allows the TidByt to still have forgeserv.net data without needing to be stood up
 """
 
-import logging
-
 import docker
 from fastapi import FastAPI, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 
 from common import list_servers
 
 app: FastAPI = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins="*",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 client = docker.from_env()
 
 
