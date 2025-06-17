@@ -2,7 +2,7 @@ import base64
 import re
 from dataclasses import dataclass
 from typing import List, Union
-
+from os import getenv
 from ping import ServerPingResponse
 from ping import ping as ping_server
 
@@ -77,7 +77,7 @@ class Server:
                 #  By default they'd otherwise all show up as 25565.. :/
                 for binding in attrs["HostConfig"]["PortBindings"][key]:
                     try:
-                        ping_resp = ping_server("localhost", port=int(binding["HostPort"]))
+                        ping_resp = ping_server(getenv("HOST_IP", "localhost"), port=int(binding["HostPort"]))
                         return ping_resp
                     except ValueError:
                         continue
