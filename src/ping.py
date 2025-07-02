@@ -85,5 +85,7 @@ def ping(ip, port=25565):
             return ServerPingResponse(json.loads(data))
         except json.decoder.JSONDecodeError:
             return None
+    except:
+        return None
     finally:
         sock.close()
