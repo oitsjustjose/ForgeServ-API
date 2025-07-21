@@ -22,7 +22,7 @@ def list_servers(client: DockerClient, all: bool = False) -> List[dict]:
 
     containers: List[Container] = list(
         filter(
-            lambda x: "itzg/minecraft-server" in x.attrs["Config"]["Image"] and "net.forgeserv.hide" not in x.labels,
+            lambda x: "itzg/minecraft-server" in x.attrs["Config"]["Image"] and "net.forgeserv.hidden" not in x.labels,
             client.containers.list(all=all),
         )
     )
